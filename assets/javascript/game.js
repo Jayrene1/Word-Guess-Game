@@ -25,9 +25,14 @@ var game = {
         this.lettersBlankAndCorect = [];
         this.lettersCorrect = [];
         this.lettersWrong = [];
+        document.getElementById("lettersWrong-tracker").innerHTML = this.lettersWrong;
         this.lettersRemaining = allLetters;
         this.lettersBlank = 0;
         guessesLeft = 6;
+
+        document.getElementById("wins-tracker").innerHTML = wins;
+        document.getElementById("losses-tracker").innerHTML = losses;
+        document.getElementById("guessesLeft-tracker").innerHTML = guessesLeft;
         console.log("Game Initialized");
     },
 // chooses a random word to guess
@@ -65,12 +70,16 @@ var game = {
             for (var i = 0; i < this.lettersBlank; i++) {
                 if (this.randomWord[i] == guess) {
                     this.lettersBlankAndCorect[i] = guess;
+                    document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
                 }
             }
-        } else{
+        } else if (this.lettersWrong.indexOf(guess) == -1) {
             this.lettersWrong.push(guess);
+            document.getElementById("lettersWrong-tracker").innerHTML = this.lettersWrong;
             guessesLeft--;
+            document.getElementById("guessesLeft-tracker").innerHTML = guessesLeft;
         }
+
         console.log("Letters Blank and Correct: " + this.lettersBlankAndCorect);
         console.log("Letters wrong: " + this.lettersWrong);
         console.log("Guesses remaining: " + guessesLeft);
