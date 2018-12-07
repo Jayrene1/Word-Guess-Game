@@ -4,7 +4,7 @@ var wins = 0;
 var losses = 0;
 
 // game theme using list of words
-var words = ["accordion", "bagpipe", "glockenspiel", "ocarina", "saxaphone", "ukulele", "theremin", "mandolin", "harpsichord", "dulcimer"];
+var words = ["acc ordion", "bag pipe", "glocken spiel", "ocar ina", "saxap hone", "uku lele", "ther emin", "mand olin", "harpsi chord", "dulc imer"];
 
 // game object
 var game = {
@@ -13,6 +13,7 @@ var game = {
     lettersWrong: [],
     lettersBlank: 0,
     lettersBlankAndCorect: [],
+    randomWordComparison: [],
 
 // game functions
 // resets the game
@@ -38,15 +39,24 @@ var game = {
         this.randomWordSplit = this.randomWord.split("");
         console.log("Random word split: " + this.randomWordSplit);
 
-        this.lettersBlank = this.randomWordSplit.length;
-        console.log("Letter Length: " + this.lettersBlank);
-
-        for (var i = 0; i < this.lettersBlank; i++) {
-            this.lettersBlankAndCorect.push("_");
-            document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
-
+        for (var i = 0; i < this.randomWordSplit.length; i++) {
+            if (this.randomWordSplit[i] == " ") {
+                this.lettersBlankAndCorect.push("&nbsp;");
+                document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
+            } else {
+                this.lettersBlankAndCorect.push("_");
+                document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
+            }
         }
         console.log("Letters Blank and Correct: " + this.lettersBlankAndCorect);
+        // copy game word to new string and splice out spaces
+        this.randomWordComparison = this.randomWord.split("");
+        for (var i = 0; i < this.randomWordComparison.length; i++) {
+            if (this.randomWordComparison[i] == " ") {
+                this.randomWordComparison.splice(i, 1);
+            }
+        }
+        console.log("random word comparison: " + this.randomWordComparison);
     },
 
 // passes in user input to check against random word
@@ -54,16 +64,16 @@ var game = {
         console.log("guess: " + guess);
         var goodGuess = false;
 
-        for (var i = 0; i < this.lettersBlank; i++) {
-            if (this.randomWord[i] == guess) {
+        for (var i = 0; i < this.randomWordComparison.length; i++) {
+            if (this.randomWordComparison[i] == guess) {
                 goodGuess = true;
             }
         }
         console.log("goodGuess: " + goodGuess);
 
         if (goodGuess) {
-            for (var i = 0; i < this.lettersBlank; i++) {
-                if (this.randomWord[i] == guess) {
+            for (var i = 0; i < this.randomWordComparison.length; i++) {                
+                if (this.randomWordComparison[i] == guess) {
                     this.lettersBlankAndCorect[i] = guess;
                     document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
                     this.playSound("goodGuess");
