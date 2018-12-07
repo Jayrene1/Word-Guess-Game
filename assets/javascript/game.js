@@ -2,18 +2,15 @@
 var guessesLeft;
 var wins = 0;
 var losses = 0;
-var allLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
 // game theme using list of words
-var words = ["jimi hendrix", "eddie van halen", "eric clapton", "slash", "george harrison", "brian may", "john mayer", "steve vai", "prince", "jack white"];
+var words = ["accordion", "bagpipe", "glockenspiel", "ocarina", "saxaphone", "ukulele", "theremin", "mandolin", "harpsichord", "dulcimer"];
 
 // game object
 var game = {
     randomWord: "",
     randomWordSplit: [],
-    lettersCorrect: [],
     lettersWrong: [],
-    lettersRemaining: [],
     lettersBlank: 0,
     lettersBlankAndCorect: [],
 
@@ -23,10 +20,8 @@ var game = {
         this.randomWord;
         this.randomWordSplit = [];
         this.lettersBlankAndCorect = [];
-        this.lettersCorrect = [];
         this.lettersWrong = [];
         document.getElementById("lettersWrong-tracker").innerHTML = this.lettersWrong;
-        this.lettersRemaining = allLetters;
         this.lettersBlank = 0;
         guessesLeft = 6;
 
@@ -106,7 +101,7 @@ var game = {
 }
 
 // displays stickman and hangman images
-function stickmanImage(src, width, height, alt) {
+/*function stickmanImage(src, width, height, alt) {
     var img = document.createElement("img");
     img.src = src;
     img.width = width;
@@ -114,7 +109,8 @@ function stickmanImage(src, width, height, alt) {
     img.alt = alt;
 
     document.getElementById("stickman").appendChild(img);
-}
+}*/
+
 // updates stickman/hangman images
 function displayImage() {
 switch (guessesLeft) {
@@ -146,7 +142,17 @@ game.Initialize();
 game.chooseWord();
 document.onkeyup = function (event) {
     var guess = String.fromCharCode(event.keyCode).toLowerCase();
-    game.checkGuess(guess);
-    displayImage();
-    game.gameOver();
+    //validates user input to letter value only
+    isAlphaNumeric = /^[a-z]+$/i.test(guess);
+    console.log("Is alphanumeric: " + isAlphaNumeric);
+
+    if (isAlphaNumeric) {
+        game.checkGuess(guess);
+        displayImage();
+        game.gameOver();
+    }
+}
+
+if (gameOver()) {
+    
 }
