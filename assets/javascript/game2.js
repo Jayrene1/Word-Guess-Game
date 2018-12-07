@@ -10,6 +10,7 @@ var words = ["jimi hendrix", "eddie van halen", "eric clapton", "slash", "george
 // game object
 var game = {
     randomWord: "",
+    numSpaces: 0,
     randomWordSplit: [],
     lettersCorrect: [],
     lettersWrong: [],
@@ -21,6 +22,7 @@ var game = {
 // resets the game
     Initialize: function () {
         this.randomWord;
+        this.numSpaces = 0;
         this.randomWordSplit = [];
         this.lettersBlankAndCorect = [];
         this.lettersCorrect = [];
@@ -30,9 +32,9 @@ var game = {
         this.lettersBlank = 0;
         guessesLeft = 6;
 
-        document.getElementById("wins-tracker").innerHTML = "Wins: " + wins;
-        document.getElementById("losses-tracker").innerHTML = "Losses: " + losses;
-        document.getElementById("guessesLeft-tracker").innerHTML = "Guesses Left: " + guessesLeft;
+        document.getElementById("wins-tracker").innerHTML = wins;
+        document.getElementById("losses-tracker").innerHTML = losses;
+        document.getElementById("guessesLeft-tracker").innerHTML = guessesLeft;
         console.log("Game Initialized");
     },
 // chooses a random word to guess
@@ -40,15 +42,31 @@ var game = {
         this.randomWord = words[Math.floor(Math.random() * words.length)];
         console.log("Random word chosen: " + this.randomWord);
 
-        this.randomWordSplit = this.randomWord.split("");
+
+        this.randomWordSplit = this.randomWord.split(" ");
         console.log("Random word split: " + this.randomWordSplit);
 
-        this.lettersBlank = this.randomWordSplit.length;
+        this.numSpaces = this.randomWordSplit.length - 1;
+        console.log("Number of Spaces: " + this.numSpaces);
+
+
+        for(var i = 0; i < this.randomWordSplit.length; i++){
+          for(var j = 0; j < this.randomWordSplit[i].length; j++){
+            this.lettersBlank++;
+          }
+        }
+
         console.log("Letter Length: " + this.lettersBlank);
 
-        for (var i = 0; i < this.lettersBlank; i++) {
+        for (var i = 0; i < this.randomWord.length; i++) {
+          if(this.randomWord[i] == " "){
+            this.lettersBlankAndCorect.push(" ");
+          }
+          else{
             this.lettersBlankAndCorect.push("_");
-            document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
+          }
+            //console.log(this.lettersBlankAndCorect.join(" "));
+            document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join("");
 
         }
         console.log("Letters Blank and Correct: " + this.lettersBlankAndCorect);
@@ -59,7 +77,7 @@ var game = {
         console.log("guess: " + guess);
         var goodGuess = false;
 
-        for (var i = 0; i < this.lettersBlank; i++) {
+        for (var i = 0; i < this.lettersBlank + this.numSpaces; i++) {
             if (this.randomWord[i] == guess) {
                 goodGuess = true;
             }
@@ -67,17 +85,17 @@ var game = {
         console.log("goodGuess: " + goodGuess);
 
         if (goodGuess) {
-            for (var i = 0; i < this.lettersBlank; i++) {
+            for (var i = 0; i < this.lettersBlank + this.numSpaces; i++) {
                 if (this.randomWord[i] == guess) {
                     this.lettersBlankAndCorect[i] = guess;
-                    document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
+                    document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join("");
                 }
             }
         } else if (this.lettersWrong.indexOf(guess) == -1) {
             this.lettersWrong.push(guess);
             document.getElementById("lettersWrong-tracker").innerHTML = this.lettersWrong;
             guessesLeft--;
-            document.getElementById("guessesLeft-tracker").innerHTML = "Guesses Left: " + guessesLeft;
+            document.getElementById("guessesLeft-tracker").innerHTML = guessesLeft;
         }
 
         console.log("Letters Blank and Correct: " + this.lettersBlankAndCorect);
@@ -87,7 +105,8 @@ var game = {
 
 // runs to check if the game has ended, and restarts game if true
     gameOver: function() {
-        if (this.randomWordSplit.toString() == this.lettersBlankAndCorect.toString()) {
+
+        if (this.randomWord == this.lettersBlankAndCorect.join("").toString()) {
             wins++;
             this.Initialize();
             this.chooseWord();
@@ -105,48 +124,11 @@ var game = {
     }
 }
 
-// displays stickman and hangman images
-function stickmanImage(src, width, height, alt) {
-    var img = document.createElement("img");
-    img.src = src;
-    img.width = width;
-    img.height = height;
-    img.alt = alt;
-
-    document.getElementById("stickman").appendChild(img);
-}
-// updates stickman/hangman images
-function displayImage() {
-switch (guessesLeft) {
-    case 5: document.getElementById("stickman").src="assets/images/Stick Figure_partial_1.svg";
-        document.getElementById("hangman").src="assets/images/Hangman Figure_partial_1.svg";
-    break;
-    case 4: document.getElementById("stickman").src="assets/images/Stick Figure_partial_2.svg";
-        document.getElementById("hangman").src="assets/images/Hangman Figure_partial_2.svg";
-    break;
-    case 3: document.getElementById("stickman").src="assets/images/Stick Figure_partial_3.svg";
-        document.getElementById("hangman").src="assets/images/Hangman Figure_partial_3.svg";
-    break;
-    case 2: document.getElementById("stickman").src="assets/images/Stick Figure_partial_4.svg";
-        document.getElementById("hangman").src="assets/images/Hangman Figure_partial_4.svg";
-    break;
-    case 1: document.getElementById("stickman").src="assets/images/Stick Figure_partial_5.svg";
-        document.getElementById("hangman").src="assets/images/Hangman Figure_partial_5.svg";
-    break;
-    case 0: document.getElementById("stickman").src="assets/images/Stick Figure_partial_6_GONE.svg";
-        document.getElementById("hangman").src="assets/images/Hangman Figure_partial_6_FULL.svg";    
-    break;
-    default: document.getElementById("stickman").src="assets/images/Stick Figure_selection.svg";
-        document.getElementById("hangman").src="assets/images/Stick Figure_partial_6_GONE.svg";
-};
-}
-
 // calls to start game
 game.Initialize();
 game.chooseWord();
 document.onkeyup = function (event) {
     var guess = String.fromCharCode(event.keyCode).toLowerCase();
     game.checkGuess(guess);
-    displayImage();
     game.gameOver();
 }

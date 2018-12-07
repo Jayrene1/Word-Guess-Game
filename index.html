@@ -6,6 +6,8 @@
     <title>Word Guess Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <!--Google Font: Roboto-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!--Bootstrap CDN-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
@@ -16,31 +18,42 @@
 <body class="bg-light">
     <!--Header with game title & style-->
     <header>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <h1>Word Guess Game</h1>
-                </div>
+        <div class="jumbotron jumbotron-fluid bg-dark">
+            <div class="container text-center text-light">
+                <h1 class="display-4">Word Guess</h1>
+                <p class="lead">A word guessing game by Joshua Arcega</p>
             </div>
         </div>
     </header>
     <!--3 Columns with game activity, | 3 | 6 | 3 | col size-->
-    <div class="container">
+    <div class="container border rounded">
         <div class="row">
     <!--col 1 contains instructions and updating theme image-->
             <div class="col-3">
-                <h3>Instructions</h1>
+                <h3 class="p-4">Instructions</h1>
                 <p>Enter a letter on your keyboard to guess the blank word. Guess all the letters correctly to win! If you run out of guesses, you lose.</p>
             </div>
     <!-- col 2 contains hangman graphics and blank word play area-->
-            <div class="col-6">
-                <p id="randomWord"></p>
+            <div class="col-6 border-left border-right">
+                <div class="row p-4">
+                    <div class="col-6 justify-content-center align-items-center px-auto">
+                        <img class="img-fluid" id="stickman" src="assets/images/Stick Figure_selection.svg" alt="Stickman Figure">
+                    </div>
+                    <div class="col-6 justify-content-center align-items-center px-auto">
+                        <img class="img-fluid" id="hangman" src="assets/images/Stick Figure_partial_6_GONE.svg" alt="Hangman Stick Figure">
+                    </div>
+                </div>
+                <div class="row my-4">
+                    <div class="col-12 my-4 text-center">
+                        <h2 class="text-primary" id="randomWord"></h2>
+                    </div>            
+                </div>
             </div>
     <!-- col 3 contains stats (wins, losses) and guesses remaining (possibly in alphabet board-->
             <div class="col-3">
-                <h3>Wins: <p id="wins-tracker"></p></h3>
-                <h3>Losses: <p id="losses-tracker"></p></h3>
-                <h3>Guesses Left: <p id="guessesLeft-tracker"></p></h3>
+                <h3 id="wins-tracker">Wins: </h3>
+                <h3 id="losses-tracker"></h3>
+                <h3 id="guessesLeft-tracker"></h3>
                 <h3>Wrong Letters: <p id="lettersWrong-tracker"></p></h3>
             </div>
         </div>
@@ -48,7 +61,6 @@
     <!--Footer with copyright & social links-->
     <footer>
         <div class="container">
-
         </div>
     </footer>
     <!--game script file-->
