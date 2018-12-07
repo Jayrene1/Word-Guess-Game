@@ -66,6 +66,7 @@ var game = {
                 if (this.randomWord[i] == guess) {
                     this.lettersBlankAndCorect[i] = guess;
                     document.getElementById("randomWord").innerHTML = " " + this.lettersBlankAndCorect.join(" ");
+                    this.playSound("goodGuess");
                 }
             }
         } else if (this.lettersWrong.indexOf(guess) == -1) {
@@ -73,6 +74,7 @@ var game = {
             document.getElementById("lettersWrong-tracker").innerHTML = this.lettersWrong;
             guessesLeft--;
             document.getElementById("guessesLeft-tracker").innerHTML = "Guesses Left: " + guessesLeft;
+            this.playSound("wrongGuess");
         }
 
         console.log("Letters Blank and Correct: " + this.lettersBlankAndCorect);
@@ -80,16 +82,54 @@ var game = {
         console.log("Guesses remaining: " + guessesLeft);
     },
 
+// plays game sound on win, depending on word chosen
+    playSound: function(instrument) {
+        var audio;
+        switch (instrument) {
+            case "goodGuess": audio = new Audio('assets/audio/goodGuess.wav');
+            break;
+            case "wrongGuess": audio = new Audio('assets/audio/wrongGuess.wav');
+            break;
+            case "accordion": audio = new Audio('assets/audio/accordion.wav');
+            break;
+            case "bagpipe": audio = new Audio('assets/audio/bagpipe.wav');
+            break;
+            case "glockenspiel": audio = new Audio('assets/audio/glock.wav');
+            break;
+            case "ocarina": audio = new Audio('assets/audio/ocarina.wav');
+            break;
+            case "saxaphone": audio = new Audio('assets/audio/saxaphone.wav');
+            break;
+            case "ukulele": audio = new Audio('assets/audio/ukulele.wav');
+            break;           
+            case "theremin": audio = new Audio('assets/audio/theremin.wav');
+            break;
+            case "mandolin": audio = new Audio('assets/audio/mandolin.wav');
+            break;
+            case "harpsichord": audio = new Audio('assets/audio/harpsichord.wav');
+            break;
+            case "dulcimer": audio = new Audio('assets/audio/dulcimer.wav');
+            break;
+            case "loss": audio = new Audio('assets/audio/loss.wav')
+            break;
+        }
+        audio.play();
+    },
+
 // runs to check if the game has ended, and restarts game if true
     gameOver: function() {
         if (this.randomWordSplit.toString() == this.lettersBlankAndCorect.toString()) {
             wins++;
+            document.getElementById("winning-word").innerHTML = "The winning word was " + this.randomWord + "!";
+            this.playSound(this.randomWord);
             this.Initialize();
             this.chooseWord();
             console.log("| Wins: " + wins + " Losses: " + losses + " |")
             return true;
         } else if (guessesLeft == 0) {
             losses++;
+            document.getElementById("winning-word").innerHTML = "You lost... The winning word was " + this.randomWord + ".";
+            this.playSound("loss");
             this.Initialize();
             this.chooseWord();
             console.log("| Wins: " + wins + " Losses: " + losses + " |")
@@ -151,8 +191,4 @@ document.onkeyup = function (event) {
         displayImage();
         game.gameOver();
     }
-}
-
-if (gameOver()) {
-    
 }
